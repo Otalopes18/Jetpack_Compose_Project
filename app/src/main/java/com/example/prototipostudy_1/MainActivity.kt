@@ -2,7 +2,7 @@ package com.example.prototipostudy_1
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.GridLayout
+import androidx.compose.material3.adaptive.currentWindowSize
 import androidx.compose.foundation.layout.Column
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,6 +12,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.border
 import androidx.compose.foundation.content.contentReceiver
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -20,11 +21,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.contextmenu.modifier.filterTextContextMenuComponents
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -42,6 +44,7 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
+import androidx.window.core.layout.WindowWidthSizeClass
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -50,6 +53,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
 import com.example.prototipostudy_1.ui.theme.PrototipoStudy_1Theme
 
 class MainActivity : ComponentActivity() {
@@ -100,16 +104,74 @@ enum class AppDestinations(
     FAVORITES("Favorites", R.drawable.ic_favorite),
     PROFILE("Profile", R.drawable.ic_account_box),
 }
+//RESPONSIVIDADE COM O WINDOWSIZECLASS
+
+/*@Composable
+fun MainScreen(){
+    val windowSizeClass =currentWindowSizeClass()
+    when (windowSizeClass.windowWidthSizeClass){
+        WindowWidthSizeClass.COMPACT->{
+
+
+        }
+
+        WindowWidthSizeClass.MEDIUM->{
+
+
+
+        }
+
+        WindowWidthSizeClass.EXPANDED->{
+
+
+
+        }
+    }
+}*/
+@Composable
+fun BottomV(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center
+
+    ) {
+
+    }
+}
 
 @Composable
-fun BottonsV(name:String ="volume",modifier: Modifier){
-   Column(modifier = Modifier
-       .padding(20.dp)
-       .border(2.dp,Color.Green)
+fun BottonP(modifier: Modifier = Modifier){
+ Column(
+     modifier = modifier
+         .padding(2.dp)
+         .border(width = 1.dp, color = Color(0xFF828282))
+         .background(Color(0xFF828282))
+         .size(35.dp)
 
-   ){
-      Text(text = name )
-   }}
+
+ ) { Text("play/pause")
+ }
+}
+//gravador
+@Composable
+fun BottonsG(modifier: Modifier = Modifier) {
+    Column(
+        modifier = Modifier
+            .padding(4.dp)
+            .border(width = 1.dp, color = Color(0xFF828282))
+            .padding(8.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+
+        )
+        {//icônes
+        }
+        Text(
+            "Gravador", color = Color.White, fontSize = 18.sp
+        )
+    }
+}
 //REGRA PARA A EXIBIÇÃO DOS QUADRADOS DENTRO DA TELA
 @Composable
 fun ViewResponsible(modifier: Modifier = Modifier) {
@@ -136,10 +198,11 @@ fun ViewResponsible(modifier: Modifier = Modifier) {
         items(Exibition) { item ->
             Box(
                 modifier = Modifier
-                    .padding(horizontal =2.dp, vertical = 2.dp)
+                    .padding(horizontal = 2.dp, vertical = 2.dp)
                     .aspectRatio(1f)
-                    .background(Color(0xFF696969),shape =RoundedCornerShape(2.dp))
-                    .border(2.dp,Color(0xFF050404),
+                    .background(Color(0xFF696969), shape = RoundedCornerShape(2.dp))
+                    .border(
+                        2.dp, Color(0xFF050404),
                         shape = RoundedCornerShape(15.dp)
                     )
                     .fillMaxWidth(0.5f)
@@ -147,34 +210,23 @@ fun ViewResponsible(modifier: Modifier = Modifier) {
 
 
             )
-         //Gravadores
 
-         { BottonsV(name ="",modifier = Modifier.fillMaxWidth())
-                 Column(modifier = Modifier
-                     .border(width = 10.dp,color = Color(0xFF828282))
-                     .padding(20.dp),
-                 ){
-                     Row(modifier = Modifier.fillMaxWidth()
-
-                     )
-                     {//icônes
-                     }
-                         Text("Gravador $item",color = Color.White, fontSize = 18.sp
-
-                         )
-                     }
-             }
+            {  BottonsG()
+               BottonP()
             }
         }
     }
-
-
+}
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    PrototipoStudy_1Theme {
+fun ViewResponsiblePreview(){
+    PrototipoStudy_1Theme() {
+        BottonsG()
+        BottonP()
         ViewResponsible()
     }
 }
+
+
 //Aprofundar com o uso de grid
 //Verificar o local.configuration
