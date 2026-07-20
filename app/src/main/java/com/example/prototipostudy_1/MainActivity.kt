@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.text.contextmenu.modifier.filterTextContextMenuComponents
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -132,11 +133,12 @@ fun ViewResponsible(modifier: Modifier = Modifier) {
                     Box (
                         //Rows
                         //Columns
+                        //A ordem do modifier importa!
                         modifier= Modifier
                             .fillMaxSize(0.2f)
                             .background(Color.Red)
                             .align(Alignment.Center)
-                            .border(2.dp,Color(0xFF98FFFF),shape = RoundedCornerShape(15.dp))
+                            .border(2.dp,Color(0x75757550),shape = RoundedCornerShape(15.dp))
                     )
                     //Quadrado filho 2
                     Box(
@@ -162,4 +164,4 @@ fun GreetingPreview() {
     }
 }
 //Aprofundar com o uso de grid
-//Verificar o local.configuration e as demais responsividades de tela
+//Verificar o local.configuration e as demais responsividades de telade
