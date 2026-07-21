@@ -2,6 +2,7 @@
 package com.example.prototipostudy_1
 import android.content.res.Configuration
 import android.os.Bundle
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.adaptive.currentWindowSize
 import androidx.compose.foundation.layout.Column
 import androidx.activity.ComponentActivity
@@ -11,8 +12,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.border
-import androidx.compose.foundation.content.contentReceiver
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -20,11 +21,15 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -45,7 +50,14 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.style.TextAlign
+import com.example.prototipostudy_1.ui.theme.ExtraColors
 import com.example.prototipostudy_1.ui.theme.PrototipoStudy_1Theme
+import com.example.prototipostudy_1.ui.theme.Cores
+import com.example.prototipostudy_1.ui.theme.ExtraColors
+import androidx.compose.runtime.toMutableStateList
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +91,7 @@ fun PrototipoStudy_1App() {
             }
         }
     ) {
-        //VISUALIZAÇÃO DAS FUNÇÕES
+
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ViewResponsible(modifier = Modifier.padding(innerPadding),)
         }
@@ -93,39 +105,50 @@ enum class AppDestinations(
     FAVORITES("Favorites", R.drawable.ic_favorite),
     PROFILE("Profile", R.drawable.ic_account_box),
 }
-//gravador
+//Gravador
 @Composable
 fun TextRecorder(modifier: Modifier = Modifier) {
     Column(
         modifier = Modifier
-            .padding(4.dp)
-            .border(width = 2.dp, color = Color(0xFF828282))
+            .padding(32.dp)
+            .border(width = 1.dp, color = Color.Black)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth()
+            .height(20.dp)
+            .width(20.dp)
         )
-        {//icônes
+        {
             Text(
                 "Gravador",
+
+                textAlign = TextAlign.Right,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(end = 7.dp),
                 color = Color.White,
                 fontSize = 18.sp
+
             )
         }
-
     }
 }
-//REGRA PARA A EXIBIÇÃO DOS QUADRADOS DENTRO DA TELA
+//REGRAS PARA A EXIBIÇÃO DOS QUADRADOS DA TELA
 @Composable
 fun ViewResponsible(modifier: Modifier = Modifier) {
+    val allitems = remember { ExtraColors }
     val configuration = LocalConfiguration.current
     val isPortrait = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
-    val All = remember { List(9){ index ->} }
     val colunas = if (isPortrait) 3 else 4
 
     val Exibition = if (isPortrait) {
-        All
+        allitems
     } else {
-        All.take(8)
+        allitems.take(8)
+    }
+    var corGlobal =Color.Red
+    val estadosDeIndice = remember {
+        List(Exibition.size) { -1 }.toMutableStateList()
     }
     //ESTILIZAÇÃO DO QUADRADO PAI
     LazyVerticalGrid(
@@ -135,22 +158,47 @@ fun ViewResponsible(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.spacedBy(2.dp),
         contentPadding = PaddingValues(5.dp),
     )
-    {
-        items(Exibition) { item ->
+    {//regra para mudança de cor
+            itemsIndexed(Exibition) { index,item->
+
+                val indiceCorAtual = estadosDeIndice[index]
+                val corExibida = if (indiceCorAtual  == -1) {
+                    corGlobal
+                } else {
+                    allitems[indiceCorAtual].cor
+                }
+                val nomeExibido = if (indiceCorAtual == -1){
+                    "Red"
+                } else{
+                    allitems[indiceCorAtual].nome
+                }
             Box(
-                modifier = Modifier
-                    .padding(horizontal = 2.dp, vertical = 2.dp)
+                modifier = Modifier.clickable{
+                    estadosDeIndice[index] = (indiceCorAtual + 1) % allitems.size
+                }
                     .aspectRatio(1f)
-                    .background(Color(0xFF696969), shape = RoundedCornerShape(15.dp))
+                    .padding(horizontal = 2.dp, vertical = 2.dp)
+                    .background(color=corExibida, shape = RoundedCornerShape(10.dp))
                     .border(
-                        2.dp, Color(0xFF050404),
-                        shape = RoundedCornerShape(15.dp)
+                        2.dp, Color.Black,
+                        shape = RoundedCornerShape(10.dp)
                     )
                     .fillMaxWidth(0.5f)
                     .fillMaxHeight(0.5f)
             )
             {
                 TextRecorder()
+                Text(
+
+                    textAlign = TextAlign.Center,
+                    modifier = modifier
+                        .fillMaxSize()
+                        .offset(y = (-20).dp),
+                    text = nomeExibido,
+                    color = Color.White,
+
+
+                    )
             }
         }
     }

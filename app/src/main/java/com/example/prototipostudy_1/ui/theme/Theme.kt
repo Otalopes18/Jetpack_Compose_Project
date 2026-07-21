@@ -10,6 +10,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -20,7 +21,31 @@ private val DarkColorScheme = darkColorScheme(
 private val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
-    tertiary = Pink40
+    tertiary = Pink40 )
+
+
+val ExtraColors = listOf(
+    Cores("Orange",Color(0xFFE56112)),
+    Cores("Yellow",Color(0xFFF3D068)),
+    Cores("Green",Color(0xFF316D09)),
+    Cores("Blue_ciano",Color(0xFF3EEFEC)),
+    Cores("Purple",Color(0xFF963EEF)),
+    Cores("Pink",Color(0xFFF368D5)),
+)
+/*
+
+val Red_power = Color(0xFFE51212)
+
+val Yellow_ligth= Color(0xFFF3D068)
+
+val green_power = Color(0xFF316D09)
+
+val Blue_ciano = Color(0xFF3EEFEC)
+
+val Purple_ligth = Color(0xFF963EEF)
+
+val Pink_ligth = Color(0xFFF368D5)
+*/
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -31,8 +56,6 @@ private val LightColorScheme = lightColorScheme(
     onBackground = Color(0xFF1C1B1F),
     onSurface = Color(0xFF1C1B1F),
     */
-)
-
 @Composable
 fun PrototipoStudy_1Theme(
     darkTheme: Boolean = isSystemInDarkTheme(),
