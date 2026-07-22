@@ -11,5 +11,4 @@ val Pink40 = Color(0xFF7D5260)
 
 data class Cores(
     val nome: String,
-    val cor: Color,
-)
+    val cor: Color)

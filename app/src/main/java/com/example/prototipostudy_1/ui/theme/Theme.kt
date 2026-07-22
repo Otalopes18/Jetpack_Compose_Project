@@ -22,15 +22,16 @@ private val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
     tertiary = Pink40 )
-
-
 val ExtraColors = listOf(
     Cores("Orange",Color(0xFFE56112)),
     Cores("Yellow",Color(0xFFF3D068)),
     Cores("Green",Color(0xFF316D09)),
-    Cores("Blue_ciano",Color(0xFF3EEFEC)),
+    Cores("Blue ciano",Color(0xFF3EEFEC)),
     Cores("Purple",Color(0xFF963EEF)),
-    Cores("Pink",Color(0xFFF368D5)),
+    Cores("Blue",Color(0xFF272AF5)),
+    Cores("Dark green",Color(0xFF1B4403)),
+    Cores("Dark red",Color(0xFF9C0707)),
+    Cores("light green",Color(0xFF95F863)),
 )
 /*
 
