@@ -32,6 +32,7 @@ val ExtraColors = listOf(
     Cores("Dark green",Color(0xFF1B4403)),
     Cores("Dark red",Color(0xFF9C0707)),
     Cores("light green",Color(0xFF95F863)),
+    Cores("Violet",Color(0xFF290344)),
 )
 /*
 

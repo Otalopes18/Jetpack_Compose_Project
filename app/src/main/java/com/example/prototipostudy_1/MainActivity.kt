@@ -1,9 +1,10 @@
 @file:OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+
 package com.example.prototipostudy_1
+
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.layout.Column
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,18 +13,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Icon
@@ -34,10 +31,10 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -46,10 +43,11 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.runtime.key
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.luminance
 import com.example.prototipostudy_1.ui.theme.ExtraColors
 import com.example.prototipostudy_1.ui.theme.PrototipoStudy_1Theme
-import androidx.compose.runtime.toMutableStateList
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,11 +60,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 //COMPOSIÇÃO DAS CHAMADAS DA COMPOSABLES
 @PreviewScreenSizes
 @Composable
 fun PrototipoStudy_1App() {
-    var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.HOME)
+    var currentDestination by rememberSaveable {
+        mutableStateOf(AppDestinations.HOME)
     }
     NavigationSuiteScaffold(
         navigationSuiteItems = {
@@ -75,10 +75,12 @@ fun PrototipoStudy_1App() {
                     icon = {
                         Icon(
                             painterResource(it.icon),
-                            contentDescription = it.label)},
+                            contentDescription = it.label
+                        )
+                    },
                     label = { Text(it.label) },
                     selected = it == currentDestination,
-                    onClick = { currentDestination = it}
+                    onClick = { currentDestination = it }
                 )
             }
         }
@@ -88,50 +90,75 @@ fun PrototipoStudy_1App() {
         }
     }
 }
+
 enum class AppDestinations(
     val label: String,
-    val icon: Int)
-{
+    val icon: Int
+) {
     HOME("Home", R.drawable.ic_home),
     FAVORITES("Favorites", R.drawable.ic_favorite),
-    PROFILE("Profile", R.drawable.ic_account_box),}
+    PROFILE("Profile", R.drawable.ic_account_box),
+}
+
 //Gravador
 @Composable
-fun TextRecorder(modifier: Modifier = Modifier) {
-        Column(
-            modifier = Modifier
-                .padding( 5.dp)
-                .padding(top = 25.dp)
-                .border(width = 2.dp, color = Color.Black))
-        {
-            Row(
-                modifier = Modifier.fillMaxWidth()
-                    .height(20.dp)
-                    .width(20.dp))
-            {
-                Text(
-                    "Gravador",
-                    textAlign = TextAlign.Center,
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(end = 7.dp),
-                    color = Color.White,
-                    fontSize = 15.sp)
-            }
-        }
-     }
-//REGRAS PARA A EXIBIÇÃO DOS QUADRADOS DA TELA
+fun TextRecorder(
+    corDoTexto: Color,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = "Gravador",
+        textAlign = TextAlign.Center,
+        color = corDoTexto,
+        fontSize = 12.sp,
+        modifier = modifier
+            .padding(10.dp)
+            .border(2.dp, Color.Black, RoundedCornerShape(6.dp))
+            .padding(horizontal = 30.dp, vertical = 2.dp)
+    )
+}
+
+@Composable
+fun NomeDaCor(
+    texto: String,
+    corDoTexto: Color,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = texto,
+        textAlign = TextAlign.Center,
+        color = corDoTexto,
+        fontSize = 14.sp,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 6.dp)
+    )
+}
+
+//REGRAS QUADRADOS
+private const val totalQuadrados = 9
+private fun posicaoParaEstado(posicaoVisivel: Int, quadradosTela: Int): Int {
+    if (quadradosTela == totalQuadrados) {
+        return posicaoVisivel
+    }
+    if (posicaoVisivel == 0) return 0
+    if (posicaoVisivel == 1) return 1
+    if (posicaoVisivel == 2) return 2
+    if (posicaoVisivel == 3) return 3
+    if (posicaoVisivel == 4) return 4
+    if (posicaoVisivel == 5) return 5
+    if (posicaoVisivel == 6) return 6
+    if (posicaoVisivel == 7) return 7
+    return 8
+}
 @Composable
 fun ViewResponsible(modifier: Modifier = Modifier) {
 
-    val todasAsCores = remember { ExtraColors }
-
+    val todasAsCores = ExtraColors
     val configuration = LocalConfiguration.current
-
     val isPortrait =
         configuration.orientation == Configuration.ORIENTATION_PORTRAIT
-    //lAYOUT
-    val quadrados = if (isPortrait) {
+    val quadradosTela = if (isPortrait) {
         9
     } else {
         8
@@ -141,63 +168,47 @@ fun ViewResponsible(modifier: Modifier = Modifier) {
     } else {
         4
     }
-    //CORES
-    val Exibition = if (isPortrait) {
-        todasAsCores.take(9)
-    } else {
-        todasAsCores.take(8)
-    }
-    //criação estados e cores
-    val corGlobal = Color.Red
-
-    val estadosDeIndice = rememberSaveable() {
-        List(9) { -1 }.toMutableStateList()
+    var estadosDeIndice by rememberSaveable(key = "estados") {
+        mutableStateOf(List(totalQuadrados) { 0 })
     }
 
-
-    //função para o ultimo quadrado
-    fun Last_indice(posicaoVisivel: Int): Int {
-        val ultimaPosicao = quadrados - 1
-        return if (posicaoVisivel == ultimaPosicao) {
-            8
-        } else {
-            posicaoVisivel
-        }
+    LaunchedEffect(isPortrait) {
+        val estadosNaTela = (0 until quadradosTela)
+            .map { posicaoParaEstado(it, quadradosTela) }
+        Log.d(
+            "debug_color",
+            "TELA CRIADA | ${if (isPortrait) "RETRATO" else "PAISAGEM"} | " +
+                    "visiveis=$quadradosTela | " +
+                    "exibindo=${estadosNaTela.joinToString(",")} | " +
+                    "oculto=${
+                        (0 until totalQuadrados)
+                            .filterNot { it in estadosNaTela }
+                            .joinToString(",")
+                            .ifEmpty { "nenhum" }
+                    } | " +
+                    "estados=${estadosDeIndice.joinToString(",")}"
+        )
     }
-
-
     //ESTILIZAÇÃO DO QUADRADO PAI
     LazyVerticalGrid(
         columns = GridCells.Fixed(colunas),
-        modifier = modifier.fillMaxSize().padding(5.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(5.dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp),
         contentPadding = PaddingValues(5.dp)
     ) {
-        //regra para mudança de cor
-        itemsIndexed(ExtraColors, key ={index,_ -> index }
-
-        ) { index, item ->
-
-            val estadosDeIndice by rememberSaveable(index) {
-                mutableStateOf(false)
+        //Mudança de cor
+        items(
+            count = quadradosTela,
+            key = { posicao ->
+                posicaoParaEstado(posicao, quadradosTela)
             }
-
-            /*val indiceEstado = Last_indice(index)
-            val indiceCorAtual = estadosDeIndice[indiceEstado]
-
-            val corExibida =
-                if (indiceCorAtual  == -1)
-                {corGlobal}
-                else{
-                todasAsCores[indiceCorAtual].cor}
-
-            val nomeExibido =
-                if (indiceCorAtual == -1){"Red"}
-                else{
-                todasAsCores[indiceCorAtual].nome}
-             */
-            //regra para volta do ciclo de estado da cor
+        ) { posicao ->
+            val indiceEstado = posicaoParaEstado(posicao, quadradosTela)
+            val opcao = todasAsCores[estadosDeIndice[indiceEstado]]
+            val corDoTexto = if (opcao.cor.luminance() > 0.5f) Color.Black else Color.White
             Box(
                 modifier = Modifier
                     .aspectRatio(1f)
@@ -206,7 +217,7 @@ fun ViewResponsible(modifier: Modifier = Modifier) {
                         vertical = 2.dp
                     )
                     .background(
-                        color = item.cor,
+                        opcao.cor,
                         shape = RoundedCornerShape(10.dp)
                     )
                     .border(
@@ -214,34 +225,37 @@ fun ViewResponsible(modifier: Modifier = Modifier) {
                         shape = RoundedCornerShape(10.dp)
                     )
                     .clickable {
-                        estadosDeIndice != estadosDeIndice
+                        val anterior = estadosDeIndice[indiceEstado]
+                        val proximo = (anterior + 1) % todasAsCores.size
+                        val novaLista = estadosDeIndice.toMutableList()
+                        novaLista[indiceEstado] = proximo
+                        estadosDeIndice = novaLista
+
                         Log.d(
-                            "debug_color",
-                            "index = $index estadosDeIndice = $estadosDeIndice e item = $item"
+                            "DEBUG",
+                            "CLIQUE pos=$posicao estado=$indiceEstado | " +
+                                    "${todasAsCores[anterior].nome}($anterior) -> " +
+                                    "${todasAsCores[proximo].nome}($proximo) | " +
+                                    "estados=${novaLista.joinToString(",")}"
                         )
-                        /* estadosDeIndice[indiceEstado] =
-                        if (estadosDeIndice[indiceEstado] == todasAsCores.lastIndex){-1}
-                        else {estadosDeIndice[indiceEstado] + 1} */
-                    }
+                    },
+                contentAlignment = Alignment.TopCenter
             ) {
-                TextRecorder()
-                Text(
-                    textAlign = TextAlign.Center,
-                    modifier = modifier
-                        .fillMaxSize()
-                        .offset(y = (-20).dp),
-                    text = "nomeExibido",
-                    color = Color.White
-                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    NomeDaCor(texto = opcao.nome, corDoTexto = corDoTexto)
+                    TextRecorder(corDoTexto = corDoTexto)
+                }
             }
         }
     }
 }
+
+@Preview(name = "Retrato", showBackground = true, widthDp = 360, heightDp = 640)
+@Preview(name = "Paisagem", showBackground = true, widthDp = 720, heightDp = 360)
 @Preview(showBackground = true)
 @Composable
-fun ViewResponsiblePreview(){
+fun ViewResponsiblePreview() {
     PrototipoStudy_1Theme() {
-        TextRecorder()
         ViewResponsible()
     }
 }
