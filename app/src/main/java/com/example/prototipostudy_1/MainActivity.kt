@@ -60,8 +60,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-//COMPOSIÇÃO DAS CHAMADAS DA COMPOSABLES
 @PreviewScreenSizes
 @Composable
 fun PrototipoStudy_1App() {
@@ -90,7 +88,6 @@ fun PrototipoStudy_1App() {
         }
     }
 }
-
 enum class AppDestinations(
     val label: String,
     val icon: Int
@@ -99,7 +96,6 @@ enum class AppDestinations(
     FAVORITES("Favorites", R.drawable.ic_favorite),
     PROFILE("Profile", R.drawable.ic_account_box),
 }
-
 //Gravador
 @Composable
 fun TextRecorder(
@@ -117,7 +113,6 @@ fun TextRecorder(
             .padding(horizontal = 30.dp, vertical = 2.dp)
     )
 }
-
 @Composable
 fun NomeDaCor(
     texto: String,
@@ -134,7 +129,6 @@ fun NomeDaCor(
             .padding(top = 6.dp)
     )
 }
-
 //REGRAS QUADRADOS
 private const val totalQuadrados = 9
 private fun posicaoParaEstado(posicaoVisivel: Int, quadradosTela: Int): Int {
@@ -199,7 +193,7 @@ fun ViewResponsible(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.spacedBy(2.dp),
         contentPadding = PaddingValues(5.dp)
     ) {
-        //Mudança de cor
+        //Mudança de cor e posição
         items(
             count = quadradosTela,
             key = { posicao ->
@@ -249,7 +243,6 @@ fun ViewResponsible(modifier: Modifier = Modifier) {
         }
     }
 }
-
 @Preview(name = "Retrato", showBackground = true, widthDp = 360, heightDp = 640)
 @Preview(name = "Paisagem", showBackground = true, widthDp = 720, heightDp = 360)
 @Preview(showBackground = true)
